@@ -3,7 +3,7 @@ FROM nginx:1.7
 MAINTAINER Hylke Visser <htdvisser@gmail.com>
 
 # Install Git
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git subversion && rm -rf /var/lib/apt/lists/*
 
 # NginX Configuration
 ADD nginx.conf /etc/nginx/nginx.conf
@@ -21,6 +21,12 @@ RUN \
   git clone https://github.com/taigaio/taiga-front-dist.git /usr/local/taiga/taiga-front-dist && \
   cd /usr/local/taiga/taiga-front-dist && \
   git checkout stable
+
+# Install Slack Plugin
+RUN \
+  mkdir /usr/local/taiga/taiga-front-dist/dist/plugins && \
+  svn export "https://github.com/taigaio/taiga-contrib-slack/tags/3.0.1/front/dist" "/usr/local/taiga/taiga-front-dist/dist/plugins/slack"
+  
 
 # Configuration and Start scripts
 ADD ./configure /usr/local/taiga/configure

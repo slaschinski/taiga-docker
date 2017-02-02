@@ -24,6 +24,11 @@ RUN \
 # Add Taiga Configuration
 ADD ./local.py /usr/local/taiga/taiga-back/settings/local.py
 
+# Add Slack Plugin
+RUN \
+  pip install taiga-contrib-slack==3.0.2 && \
+  echo "INSTALLED_APPS += [\"taiga_contrib_slack\"]"
+
 # Configure and Start scripts
 ADD ./configure /usr/local/taiga/configure
 ADD ./start /usr/local/taiga/start
